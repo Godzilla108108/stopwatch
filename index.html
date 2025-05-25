@@ -2,13 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Timer & Stopwatch</title>
     <style>
+        * {
+            box-sizing: border-box;
+        }
+        
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
-            padding: 0;
+            padding: 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -19,40 +23,42 @@
             background-repeat: no-repeat;
             transition: background-image 0.5s ease;
             color: white;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .container {
-            background-color: rgba(0, 0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.85);
             border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0);
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
             text-align: center;
-            width: 90%;
-            max-width: 500px;
+            width: 100%;
+            max-width: 100%;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         h1 {
             margin-top: 0;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             color: #ffffff;
+            font-size: 1.8rem;
         }
 
         .tabs {
             display: flex;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             background-color: rgba(30, 30, 30, 0.9);
             border-radius: 8px;
             overflow: hidden;
         }
 
         .tab {
-            padding: 12px 20px;
+            padding: 12px 10px;
             cursor: pointer;
             background-color: transparent;
             border: none;
             color: #cccccc;
-            font-size: 16px;
+            font-size: 1rem;
             flex: 1;
             transition: all 0.3s;
         }
@@ -64,23 +70,25 @@
         }
 
         .display {
-            font-size: 4rem;
-            margin: 20px 0;
+            font-size: 2.8rem;
+            margin: 15px 0;
             font-family: 'Courier New', monospace;
             color: #ffffff;
-            text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+            text-shadow: 0 0 8px rgba(0, 255, 0, 0.5);
+            word-break: break-all;
         }
 
         .controls {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 8px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
         }
 
         button {
-            padding: 12px 24px;
-            font-size: 16px;
+            padding: 12px 15px;
+            font-size: 1rem;
             border: none;
             border-radius: 6px;
             cursor: pointer;
@@ -88,15 +96,15 @@
             color: white;
             transition: all 0.3s;
             border: 1px solid rgba(255, 255, 255, 0.1);
+            min-width: 80px;
         }
 
         button:hover {
             background-color: #3a3a3a;
-            transform: translateY(-2px);
         }
 
         button:active {
-            transform: translateY(0);
+            transform: scale(0.98);
         }
 
         button:disabled {
@@ -130,15 +138,20 @@
         }
 
         .timer-input {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             background-color: rgba(30, 30, 30, 0.7);
-            padding: 15px;
+            padding: 12px;
             border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 5px;
         }
 
         input {
             padding: 10px;
-            font-size: 16px;
+            font-size: 1rem;
             width: 60px;
             text-align: center;
             border-radius: 5px;
@@ -153,8 +166,8 @@
         }
 
         .custom-bg {
-            margin-top: 20px;
-            padding-top: 20px;
+            margin-top: 15px;
+            padding-top: 15px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
@@ -162,6 +175,7 @@
             display: block;
             margin-bottom: 10px;
             color: #ccc;
+            font-size: 0.9rem;
         }
 
         #bg-upload {
@@ -171,11 +185,12 @@
         .upload-btn {
             background-color: #1565c0;
             display: inline-block;
-            padding: 12px 20px;
+            padding: 10px 15px;
             border-radius: 6px;
             cursor: pointer;
             transition: all 0.3s;
-            margin-right: 10px;
+            margin-right: 8px;
+            font-size: 0.9rem;
         }
 
         .upload-btn:hover {
@@ -184,33 +199,56 @@
 
         .remove-bg {
             background-color: #37474f;
+            font-size: 0.9rem;
+            padding: 10px 15px;
         }
 
         .remove-bg:hover {
             background-color: #263238;
         }
 
-        /* Dark scrollbar for dark theme */
-        ::-webkit-scrollbar {
-            width: 10px;
+        /* Media Queries for smaller devices */
+        @media (max-width: 400px) {
+            .display {
+                font-size: 2.2rem;
+            }
+            
+            button {
+                padding: 10px 12px;
+                font-size: 0.9rem;
+                min-width: 70px;
+            }
+            
+            input {
+                width: 50px;
+                font-size: 0.9rem;
+                padding: 8px;
+            }
+            
+            .tab {
+                padding: 10px 5px;
+                font-size: 0.9rem;
+            }
         }
 
-        ::-webkit-scrollbar-track {
-            background: #1a1a1a;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #444;
-            border-radius: 5px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #555;
+        @media (max-width: 320px) {
+            .display {
+                font-size: 1.8rem;
+            }
+            
+            .controls {
+                gap: 5px;
+            }
+            
+            button {
+                padding: 8px 10px;
+                font-size: 0.8rem;
+                min-width: 60px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- The rest of your HTML remains exactly the same -->
     <div class="container">
         <h1>Timer & Stopwatch</h1>
         
@@ -246,9 +284,9 @@
         </div>
         
         <div class="custom-bg">
-            <label for="bg-upload" class="upload-btn">Choose Background Image</label>
+            <label for="bg-upload" class="upload-btn">Choose Background</label>
             <input type="file" id="bg-upload" accept="image/*">
-            <button class="remove-bg" id="remove-bg">Remove Background</button>
+            <button class="remove-bg" id="remove-bg">Remove BG</button>
         </div>
     </div>
 
@@ -315,6 +353,8 @@
                     clearInterval(timerInterval);
                     timerStartBtn.disabled = false;
                     timerPauseBtn.disabled = true;
+                    // Vibrate when timer finishes
+                    if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
                     alert("Timer finished!");
                 }
             }, 1000);
@@ -449,6 +489,14 @@
                 this.value = value;
             });
         });
+
+        // Prevent zooming on input focus for mobile devices
+        document.addEventListener('touchstart', function(e) {
+            if (e.target.tagName === 'INPUT') {
+                e.preventDefault();
+                e.target.focus();
+            }
+        }, { passive: false });
     </script>
 </body>
 </html>
